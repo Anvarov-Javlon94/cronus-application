@@ -69,4 +69,8 @@ public class UserService {
     public List<Usr> getAllUsers() {
         return userRepository.findAll();
     }
+
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
+    }
 }

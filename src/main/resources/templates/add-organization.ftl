@@ -61,7 +61,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <#list organizations as organization>
+                        <#list organizations?if_exists as organization>
                             <tr>
                                 <th scope="col"><h6><b><#if organization.getId()??>${organization.getId()}</#if></b></h6></th>
                                 <th scope="col"><h6><b><#if organization.getName()??>${organization.getName()}</#if></b></h6></th>

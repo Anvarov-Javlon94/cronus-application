@@ -83,7 +83,7 @@
                         <textarea class="form-control" name="comment_3" rows="3"><#if user.getComment_3()??>${user.getComment_3()}</#if></textarea>
                     </div>
                     <select class="form-control" name="name" id="organization" style="margin-bottom: 20px">
-                        <option selected>Выберите Организацию</option>
+                        <option selected value="${user.getOrganization().getName()}">${user.getOrganization().getName()}</option>
                         <#list organizations?if_exists as organization>
                             <option value="${organization.getName()}">${organization.getName()}</option>
                         </#list>

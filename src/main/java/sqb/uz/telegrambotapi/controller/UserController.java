@@ -23,14 +23,13 @@ import java.util.List;
 public class UserController {
 
 
-    private final UserRepository userRepository;
-    private final OrganizationRepository organizationRepository;
+
     private final UserService userService;
     private final OrganizationService organizationService;
 
     @GetMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id) {
-        userRepository.deleteById(id);
+        userService.deleteById(id);
         return "redirect:/data-page";
     }
 
@@ -47,9 +46,6 @@ public class UserController {
     }
 
 
-
-
-
     @GetMapping("/add-user")
     public String addUserPage(Model model) {
         model.addAttribute("organizations", organizationService.getAllOrganization());
@@ -62,7 +58,7 @@ public class UserController {
     public String addUser(@ModelAttribute @Valid Composite composite,BindingResult result,Model model){
         if (!result.hasErrors()){
             userService.addUserByParam(composite);
-             return "redirect:/data-page";
+            return "redirect:/data-page";
         } else {
             model.addAttribute("errors", "Поля не должны быть пустыми");
             model.addAttribute("organizations",organizationService.getAllOrganization());
@@ -80,11 +76,13 @@ public class UserController {
                 return "redirect:/data-page";
             } else {
                 model.addAttribute("exist", "Поля не должны быть пустыми");
+                model.addAttribute("organizations", organizationService.getAllOrganization());
                 return "add-organization";
             }
 
         } else {
             model.addAttribute("errors", "Поля не должны быть пустыми");
+            model.addAttribute("organizations", organizationService.getAllOrganization());
             return "add-organization";
         }
     }
@@ -99,13 +97,16 @@ public class UserController {
     @PostMapping("/search-usr")
     public String searchUsrByParam(@RequestParam("search_param") String search_param1, Model model){
         String search_param = search_param1.toLowerCase();
-        List<Usr> userList = userRepository.findAll();
+        List<Usr> userList = userService.getAllUsers();
         List<Usr> resultList = new ArrayList<>();
         for (Usr usr : userList){
-            if (!(usr.getOrganization() == null) && (usr.getUsr_full_name().toLowerCase().contains(search_param) ||
-                    usr.getUsr_father_name().toLowerCase().contains(search_param) || usr.getOrganization().getName().toLowerCase().contains(search_param))){
-                resultList.add(usr);
-            }
+           if (!(usr.getOrganization() == null)){
+               if (usr.getUsr_full_name().toLowerCase().contains(search_param) ||  usr.getUsr_father_name().toLowerCase().contains(search_param) || usr.getOrganization().getName().toLowerCase().contains(search_param)){
+                   resultList.add(usr);
+               }
+           } else if (usr.getUsr_full_name().toLowerCase().contains(search_param) ||  usr.getUsr_father_name().toLowerCase().contains(search_param)){
+               resultList.add(usr);
+           }
         }
         model.addAttribute("users", resultList);
         return "data-page";
@@ -113,3 +114,9 @@ public class UserController {
 
 
 }
+
+
+// if (!(usr.getOrganization() == null) && (usr.getUsr_full_name().toLowerCase().contains(search_param) ||
+//         usr.getUsr_father_name().toLowerCase().contains(search_param) || usr.getOrganization().getName().toLowerCase().contains(search_param))){
+//         resultList.add(usr);
+//         }

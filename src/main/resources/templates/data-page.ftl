@@ -37,6 +37,13 @@
                                                 <input type="hidden" name="_csrf" value="${_csrf.token}">
                                             </form>
                                         </li>
+                                        <li>
+                                            <form action="/logout" method="post">
+                                                <input type="hidden" name="_csrf" value="${_csrf.token}">
+                                                <button class="btn-danger form-control">Выйти</button>
+
+                                            </form>
+                                        </li>
                                     </ul>
 
                                 </div>
